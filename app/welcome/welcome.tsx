@@ -24,22 +24,19 @@ export function Welcome() {
         <header className="flex flex-col items-center gap-5">
           <h1 className="text-4xl font-bold">Weather App</h1>
           <p>
-            <span>
-              {currentTime.toLocaleDateString(undefined, {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
-            <span> - </span>
-            <span>
-              {currentTime.toLocaleTimeString(undefined, {
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric",
-              })}
-            </span>
+            {currentTime.toLocaleDateString(undefined, {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+          <p className="text-2xl font-bold">
+            {currentTime.toLocaleTimeString(undefined, {
+              hour: "numeric",
+              minute: "numeric",
+              second: "numeric",
+            })}
           </p>
         </header>
         <div className="flex w-full max-w-[300px] flex-col items-center justify-center space-y-6 px-4">
