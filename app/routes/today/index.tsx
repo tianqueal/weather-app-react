@@ -87,13 +87,13 @@ export default function Today() {
             ? `${position?.coords.latitude}, ${position?.coords.longitude}`
             : "---, ---"}
         </h1>
-        {weather && (
-          <h2 className="text-5xl">
-            {weather.current
-              ? `${weather.current.temperature_2m}${weather.current_units.temperature_2m}`
-              : "?"}
-          </h2>
-        )}
+        <h2 className="text-5xl">
+          {weather?.current ? (
+            `${weather.current.temperature_2m}${weather.current_units.temperature_2m}`
+          ) : (
+            <ArrowPathIcon className="size-12 animate-spin" />
+          )}
+        </h2>
         <section className="flex flex-col items-center gap-4">
           <button
             type="button"
