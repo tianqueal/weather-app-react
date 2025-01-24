@@ -19,8 +19,8 @@ export function Welcome() {
   }, []);
 
   return (
-    <main className="flex items-center justify-center pb-4 pt-16">
-      <div className="flex min-h-0 flex-1 flex-col items-center gap-16">
+    <main className="flex h-screen flex-col items-start justify-center pb-4 pt-16">
+      <div className="flex min-h-0 w-full flex-1 flex-col items-center gap-16">
         <header className="flex flex-col items-center gap-5">
           <h1 className="text-4xl font-bold">Weather App</h1>
           <p>
@@ -51,6 +51,39 @@ export function Welcome() {
           </button>
         </div>
       </div>
+      <footer className="w-full text-center">
+        <p>
+          Developed by{" "}
+          <a
+            className="underline"
+            target="_blank"
+            href="https://github.com/Liansky12"
+          >
+            Liansky12
+          </a>
+          , MIT License
+        </p>
+        <p>
+          <a
+            className="underline"
+            target="_blank"
+            href="https://open-meteo.com/"
+          >
+            Weather data by Open-Meteo.com{" "}
+          </a>
+          , Attribution 4.0 International (CC BY 4.0)
+        </p>
+        <p>
+          Data © OpenStreetMap contributors, ODbL 1.0.{" "}
+          <a
+            className="underline"
+            target="_blank"
+            href="http://osm.org/copyright"
+          >
+            http://osm.org/copyright
+          </a>
+        </p>
+      </footer>
     </main>
   );
 }
