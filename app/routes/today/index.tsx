@@ -1,139 +1,65 @@
-import { ArrowPathIcon } from "@heroicons/react/16/solid";
-import { useEffect, useState } from "react";
-import type { ForecastOneDay } from "~/types/forecast-one-day";
-import type { ReverseGeocodingResponse } from "~/types/reverse-geocoding-response";
-import { getPosition } from "~/utils/functions";
+import {
+  ArrowPathIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/16/solid";
+import { useGeolocation } from "~/hooks/useGeolocation";
+import { useWeather } from "~/hooks/useWeather";
 
 export default function Today() {
-  const [position, setPosition] = useState<GeolocationPosition | undefined>();
-  const [weather, setWeather] = useState<ForecastOneDay | undefined>();
-  const [reverseGeocode, setReverseGeocode] = useState<
-    ReverseGeocodingResponse | undefined
-  >();
-  const [lastUpdated, setLastUpdated] = useState<Date | undefined>();
-  const [isDisabled, setIsDisabled] = useState(false);
+  const { position, loadGeolocation, error: geoError } = useGeolocation();
+  const {
+    weather,
+    reverseGeocode,
+    lastUpdated,
+    weatherDescription,
+    weatherGradient,
+    error: weatherError,
+  } = useWeather(position);
 
-  const fetchWeather = async (latitude: number, longitude: number) => {
-    try {
-      const params = new URLSearchParams({
-        latitude: latitude.toString(),
-        longitude: longitude.toString(),
-        current:
-          "temperature_2m,is_day,precipitation,rain,showers,snowfall,weather_code",
-        forecast_days: "1",
-      });
+  const handleUpdate = async () => {
+    const now = new Date();
 
-      const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?${params}`,
-      );
+    if (lastUpdated && now.getTime() - lastUpdated.getTime() < 10000) return;
 
-      if (!response.ok) throw new Error("Failed to fetch weather data");
+    await loadGeolocation();
+  };
 
-      const data: ForecastOneDay = await response.json();
-      setWeather(data);
-      setLastUpdated(new Date());
-    } catch (error) {
-      alert("Failed to fetch weather data");
+  const renderLocation = () => {
+    if (reverseGeocode?.address) {
+      const { city, town, county, country } = reverseGeocode.address;
+      return `${city || town || county || "---"}, ${country}`;
     }
+    return `${position?.coords.latitude ?? "---"}, ${position?.coords.longitude ?? "---"}`;
   };
-
-  const fetchReverseGeocode = async (latitude: number, longitude: number) => {
-    try {
-      const params = new URLSearchParams({
-        lat: latitude.toString(),
-        lon: longitude.toString(),
-        format: "json",
-      });
-
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?${params}`,
-      );
-
-      if (!response.ok) throw new Error("Failed to fetch reverse geocode data");
-
-      const data: ReverseGeocodingResponse = await response.json();
-      setReverseGeocode(data);
-    } catch (error) {
-      alert("Failed to fetch reverse geocode data");
-    }
-  };
-
-  const handleUpdate = () => {
-    if (isDisabled) return;
-
-    if (!position?.coords?.latitude || !position?.coords?.longitude)
-      return alert("No coordinates found");
-
-    fetchWeather(position.coords.latitude, position.coords.longitude);
-    setIsDisabled(true);
-    setTimeout(() => setIsDisabled(false), 10000);
-  };
-
-  const init = async () => {
-    try {
-      let position: GeolocationPosition | undefined;
-
-      try {
-        const storageCoords = localStorage.getItem("position");
-        if (!storageCoords) throw new Error("No coordinates found");
-
-        position = JSON.parse(storageCoords) as GeolocationPosition;
-
-        if (!position?.coords?.latitude || !position?.coords?.longitude)
-          throw new Error("Invalid coordinates");
-      } catch (error) {}
-
-      if (!position?.coords?.latitude || !position?.coords?.longitude) {
-        if (!navigator.geolocation)
-          throw new Error("Geolocation is not supported");
-
-        position = await getPosition();
-      }
-
-      if (!position?.coords?.latitude || !position?.coords?.longitude)
-        throw new Error("Invalid coordinates");
-
-      setPosition(position);
-      fetchReverseGeocode(position.coords.latitude, position.coords.longitude);
-      fetchWeather(position.coords.latitude, position.coords.longitude);
-    } catch (error) {
-      alert((error as Error).message);
-    }
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
 
   return (
-    <main className="flex items-center justify-center pb-4 pt-16">
-      <div className="flex min-h-0 flex-1 flex-col items-center gap-16">
-        <h1 className="text-4xl font-bold text-center">
-          {reverseGeocode
-            ? reverseGeocode.display_name
-            : position?.coords.latitude && position?.coords.longitude
-              ? `${position.coords.latitude}, ${position.coords.longitude}`
-              : "---, ---"}
-        </h1>
-        <h2 className="text-5xl">
-          {weather?.current ? (
-            `${weather.current.temperature_2m}${weather.current_units.temperature_2m}`
-          ) : (
-            <ArrowPathIcon className="size-12 animate-spin" />
-          )}
-        </h2>
+    <main
+      className={`${weatherGradient ? `${weatherGradient.gradient} ${weatherGradient.textColor}` : ""} flex h-screen items-start justify-center bg-gradient-to-b pb-4 pt-16 transition-colors`}
+    >
+      <div className="flex h-full min-h-0 flex-1 flex-col items-center gap-16">
+        <h1 className="text-center text-4xl font-bold">{renderLocation()}</h1>
+        <section className="flex h-full flex-1 flex-col items-center gap-4">
+          <h2 className="text-6xl">
+            {weather?.current ? (
+              `${weather.current.temperature_2m.toFixed(0)}${weather.current_units.temperature_2m}`
+            ) : weatherError || geoError ? (
+              <ExclamationTriangleIcon className="size-12" />
+            ) : (
+              <ArrowPathIcon className="size-12 animate-spin" />
+            )}
+          </h2>
+          <p className="text-lg">{weatherDescription ?? ""}</p>
+        </section>
         <section className="flex flex-col items-center gap-4">
           <button
-            type="button"
             onClick={handleUpdate}
-            disabled={isDisabled}
-            className="flex items-center gap-2 rounded-md border border-gray-300 px-4 py-2 hover:bg-gray-50 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:hover:bg-gray-300 dark:hover:bg-gray-900"
+            className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
           >
-            <ArrowPathIcon className="size-8" />
-            <span>Update</span>
+            <ArrowPathIcon className="size-6" />
+            Update Weather
           </button>
           {lastUpdated && (
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-center text-sm">
               Last updated:{" "}
               {lastUpdated.toLocaleTimeString(undefined, {
                 weekday: "long",
