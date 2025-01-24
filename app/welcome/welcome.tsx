@@ -8,22 +8,7 @@ export function Welcome() {
 
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  const handleGetStarted = async () => {
-    try {
-      if (!navigator.geolocation)
-        throw new Error("Geolocation is not supported by your browser.");
-
-      const position = await getPosition();
-
-      if (!position?.coords?.latitude || !position?.coords?.longitude)
-        throw new Error("Unable to retrieve your location");
-
-      localStorage.setItem("position", JSON.stringify(position));
-      navigate("/today");
-    } catch (error) {
-      alert((error as Error).message);
-    }
-  };
+  const handleGetStarted = () => navigate("/today");
 
   useEffect(() => {
     const intervalId = setInterval(() => {
