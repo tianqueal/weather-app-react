@@ -1,12 +1,16 @@
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 import type { ForecastOneDay } from "~/types/forecast-one-day";
+import type { ReverseGeocodingResponse } from "~/types/reverse-geocoding-response";
 import { getPosition } from "~/utils";
 
 export default function Today() {
   const [position, setPosition] = useState<GeolocationPosition | undefined>();
-  const [weather, setWeather] = useState<ForecastOneDay>();
-  const [lastUpdated, setLastUpdated] = useState<Date>();
+  const [weather, setWeather] = useState<ForecastOneDay | undefined>();
+  const [reverseGeocode, setReverseGeocode] = useState<
+    ReverseGeocodingResponse | undefined
+  >();
+  const [lastUpdated, setLastUpdated] = useState<Date | undefined>();
   const [isDisabled, setIsDisabled] = useState(false);
 
   const fetchWeather = async (latitude: number, longitude: number) => {
@@ -30,6 +34,27 @@ export default function Today() {
       setLastUpdated(new Date());
     } catch (error) {
       alert("Failed to fetch weather data");
+    }
+  };
+
+  const fetchReverseGeocode = async (latitude: number, longitude: number) => {
+    try {
+      const params = new URLSearchParams({
+        lat: latitude.toString(),
+        lon: longitude.toString(),
+        format: "json",
+      });
+
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?${params}`,
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch reverse geocode data");
+
+      const data: ReverseGeocodingResponse = await response.json();
+      setReverseGeocode(data);
+    } catch (error) {
+      alert("Failed to fetch reverse geocode data");
     }
   };
 
@@ -69,6 +94,7 @@ export default function Today() {
         throw new Error("Invalid coordinates");
 
       setPosition(position);
+      fetchReverseGeocode(position.coords.latitude, position.coords.longitude);
       fetchWeather(position.coords.latitude, position.coords.longitude);
     } catch (error) {
       alert((error as Error).message);
@@ -82,10 +108,12 @@ export default function Today() {
   return (
     <main className="flex items-center justify-center pb-4 pt-16">
       <div className="flex min-h-0 flex-1 flex-col items-center gap-16">
-        <h1 className="text-4xl font-bold">
-          {position?.coords.latitude && position?.coords.longitude
-            ? `${position?.coords.latitude}, ${position?.coords.longitude}`
-            : "---, ---"}
+        <h1 className="text-4xl font-bold text-center">
+          {reverseGeocode
+            ? reverseGeocode.display_name
+            : position?.coords.latitude && position?.coords.longitude
+              ? `${position.coords.latitude}, ${position.coords.longitude}`
+              : "---, ---"}
         </h1>
         <h2 className="text-5xl">
           {weather?.current ? (
