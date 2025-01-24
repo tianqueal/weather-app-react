@@ -1,0 +1,25 @@
+{
+  "place_id": 245993363,
+  "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+  "osm_type": "way",
+  "osm_id": 22918541,
+  "lat": "35.65979452355886",
+  "lon": "139.7940198955344",
+  "class": "highway",
+  "type": "tertiary",
+  "place_rank": 26,
+  "importance": 0.053419268329900016,
+  "addresstype": "road",
+  "name": "",
+  "display_name": "豊洲三丁目, 豊洲, 江東区, 東京都, 135-0061, 日本",
+  "address": {
+    "neighbourhood": "豊洲三丁目",
+    "quarter": "豊洲",
+    "city": "江東区",
+    "ISO3166-2-lvl4": "JP-13",
+    "postcode": "135-0061",
+    "country": "日本",
+    "country_code": "jp"
+  },
+  "boundingbox": ["35.6557122", "35.6603925", "139.7933997", "139.7981057"]
+}

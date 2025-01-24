@@ -1,0 +1,31 @@
+{
+  "latitude": 35.65,
+  "longitude": 139.8125,
+  "generationtime_ms": 0.03361701965332031,
+  "utc_offset_seconds": 0,
+  "timezone": "GMT",
+  "timezone_abbreviation": "GMT",
+  "elevation": 6.0,
+  "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C",
+    "is_day": "",
+    "precipitation": "mm",
+    "rain": "mm",
+    "showers": "mm",
+    "snowfall": "cm",
+    "weather_code": "wmo code"
+  },
+  "current": {
+    "time": "2025-01-24T11:30",
+    "interval": 900,
+    "temperature_2m": 7.9,
+    "is_day": 0,
+    "precipitation": 0.1,
+    "rain": 0.1,
+    "showers": 0.0,
+    "snowfall": 0.0,
+    "weather_code": 51
+  }
+}
