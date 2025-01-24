@@ -26,8 +26,8 @@ export default function Today() {
 
   const renderLocation = () => {
     if (reverseGeocode?.address) {
-      const { city, town, county, country } = reverseGeocode.address;
-      return `${city || town || county || "---"}, ${country}`;
+      const { city, town, county, province, country } = reverseGeocode.address;
+      return `${city || town || county || province || "---"}, ${country}`;
     }
     return `${position?.coords.latitude ?? "---"}, ${position?.coords.longitude ?? "---"}`;
   };
