@@ -2,7 +2,7 @@ import { ArrowPathIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 import type { ForecastOneDay } from "~/types/forecast-one-day";
 import type { ReverseGeocodingResponse } from "~/types/reverse-geocoding-response";
-import { getPosition } from "~/utils";
+import { getPosition } from "~/utils/functions";
 
 export default function Today() {
   const [position, setPosition] = useState<GeolocationPosition | undefined>();

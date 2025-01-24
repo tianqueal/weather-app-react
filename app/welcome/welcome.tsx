@@ -1,7 +1,7 @@
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getPosition } from "~/utils";
+import { getPosition } from "~/utils/functions";
 
 export function Welcome() {
   const navigate = useNavigate();
