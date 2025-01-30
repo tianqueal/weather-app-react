@@ -27,14 +27,14 @@ export default function Today() {
   const renderLocation = () => {
     if (reverseGeocode?.address) {
       const { city, town, county, province, country } = reverseGeocode.address;
-      return `${city || town || county || province || "---"}, ${country}`;
+      return city || town || county || province || country;
     }
     return `${position?.coords.latitude ?? "---"}, ${position?.coords.longitude ?? "---"}`;
   };
 
   return (
     <main
-      className={`${weatherGradient ? `${weatherGradient.gradient} ${weatherGradient.textColor}` : ""} flex h-screen items-start justify-center bg-gradient-to-b pb-4 pt-16 transition-colors`}
+      className={`${weatherGradient ? `${weatherGradient.gradient} ${weatherGradient.textColor}` : ""} flex h-screen items-start justify-center bg-gradient-to-b pb-4 pl-4 pr-4 pt-16 transition-colors`}
     >
       <div className="flex h-full min-h-0 flex-1 flex-col items-center gap-16">
         <h1 className="text-center text-4xl font-bold">{renderLocation()}</h1>

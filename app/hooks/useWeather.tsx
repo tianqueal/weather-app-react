@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { ForecastOneDay } from "~/types/forecast-one-day";
 import type { ReverseGeocodingResponse } from "~/types/reverse-geocoding-response";
 import { weatherDescriptions } from "~/utils/weather-descriptions";
-import { weatherGradients } from "~/utils/weather-gradients";
+import { getWeatherGradient } from "~/utils/functions";
 
 export const useWeather = (position: GeolocationPosition | undefined) => {
   const [weather, setWeather] = useState<ForecastOneDay | null>(null);
@@ -74,7 +74,10 @@ export const useWeather = (position: GeolocationPosition | undefined) => {
       ? weatherDescriptions.get(weather.current.weather_code)
       : null,
     weatherGradient: weather
-      ? weatherGradients.get(weather.current.weather_code)
+      ? getWeatherGradient(
+          weather.current.weather_code,
+          Boolean(weather.current.is_day),
+        )
       : null,
     loadWeatherData,
     error,
