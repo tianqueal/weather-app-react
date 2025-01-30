@@ -3,6 +3,7 @@ import type { ForecastOneDay } from "~/types/forecast-one-day";
 import type { ReverseGeocodingResponse } from "~/types/reverse-geocoding-response";
 import { weatherDescriptions } from "~/utils/weather-descriptions";
 import { getWeatherGradient } from "~/utils/functions";
+import { FahrenheitCountries } from "~/constants/temperature";
 
 export const useWeather = (position: GeolocationPosition | undefined) => {
   const [weather, setWeather] = useState<ForecastOneDay | null>(null);
@@ -13,12 +14,16 @@ export const useWeather = (position: GeolocationPosition | undefined) => {
 
   const fetchWeather = async (latitude: number, longitude: number) => {
     try {
+      const userLocale = navigator.language.split("-").pop()?.toUpperCase();
+      const isFahrenheit = userLocale && FahrenheitCountries.has(userLocale);
+
       const params = new URLSearchParams({
         latitude: latitude.toString(),
         longitude: longitude.toString(),
         current:
           "temperature_2m,is_day,precipitation,rain,showers,snowfall,weather_code",
-        forecast_days: "1",
+          forecast_days: "1",
+          ...(isFahrenheit && { temperature_unit: "fahrenheit" }),
       });
 
       const response = await fetch(
