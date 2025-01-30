@@ -1,4 +1,4 @@
-export interface ReverseGeocodingResponse {
+export interface ReverseGeocodeResponse {
   place_id?: number;
   licence?: string;
   osm_type?: string;

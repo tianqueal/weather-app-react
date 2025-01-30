@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import type { ForecastOneDay } from "~/types/forecast-one-day";
-import type { ReverseGeocodingResponse } from "~/types/reverse-geocoding-response";
-import { weatherDescriptions } from "~/utils/weather-descriptions";
+import type { ForecastOneDay } from "~/types/ForecastOneDay";
+import type { ReverseGeocodeResponse } from "~/types/ReverseGeocodeResponse";
+import { weatherDescriptions } from "~/utils/weatherDescriptions";
 import { getWeatherGradient } from "~/utils/functions";
 import { FahrenheitCountries } from "~/constants/temperature";
 
 export const useWeather = (position: GeolocationPosition | undefined) => {
   const [weather, setWeather] = useState<ForecastOneDay | null>(null);
   const [reverseGeocode, setReverseGeocode] =
-    useState<ReverseGeocodingResponse | null>(null);
+    useState<ReverseGeocodeResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
@@ -22,8 +22,8 @@ export const useWeather = (position: GeolocationPosition | undefined) => {
         longitude: longitude.toString(),
         current:
           "temperature_2m,is_day,precipitation,rain,showers,snowfall,weather_code",
-          forecast_days: "1",
-          ...(isFahrenheit && { temperature_unit: "fahrenheit" }),
+        forecast_days: "1",
+        ...(isFahrenheit && { temperature_unit: "fahrenheit" }),
       });
 
       const response = await fetch(
@@ -52,7 +52,7 @@ export const useWeather = (position: GeolocationPosition | undefined) => {
       );
       if (!response.ok) throw new Error("Failed to fetch reverse geocode data");
 
-      const data: ReverseGeocodingResponse = await response.json();
+      const data: ReverseGeocodeResponse = await response.json();
       setReverseGeocode(data);
     } catch {
       setError("Failed to fetch reverse geocode data");

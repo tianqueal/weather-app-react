@@ -1,4 +1,4 @@
-import { weatherGradients } from "./weather-gradients";
+import { weatherGradients } from "./weatherGradients";
 
 export const getPosition = (
   options?: PositionOptions,
