@@ -36,19 +36,21 @@ export default function Today() {
     <main
       className={`${weatherGradient ? `${weatherGradient.gradient} ${weatherGradient.textColor}` : ""} flex h-screen items-start justify-center bg-gradient-to-b pb-4 pl-4 pr-4 pt-16 transition-colors`}
     >
-      <div className="flex h-full min-h-0 flex-1 flex-col items-center gap-16">
+      <div className="flex h-full min-h-0 flex-1 flex-col items-center gap-4">
         <h1 className="text-center text-4xl font-bold">{renderLocation()}</h1>
         <section className="flex h-full flex-1 flex-col items-center gap-4">
-          <h2 className="text-6xl">
+          <h2 className="relative text-7xl font-extralight">
             {weather?.current ? (
-              `${weather.current.temperature_2m.toFixed(0)}${weather.current_units.temperature_2m}`
+              <span className="after:absolute after:content-['°']">
+                {weather.current.temperature_2m.toFixed(0)}
+              </span>
             ) : weatherError || geoError ? (
               <ExclamationTriangleIcon className="size-12" />
             ) : (
               <ArrowPathIcon className="size-12 animate-spin" />
             )}
           </h2>
-          <p className="text-lg">{weatherDescription ?? ""}</p>
+          <p className="text-xl opacity-80">{weatherDescription ?? ""}</p>
         </section>
         <section className="flex flex-col items-center gap-4">
           <button
