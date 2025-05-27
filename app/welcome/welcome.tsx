@@ -1,13 +1,14 @@
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { productName, version, author, license } from "package.json";
 
 export function Welcome() {
   const navigate = useNavigate();
 
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  const handleGetStarted = () => navigate("/today");
+  const handleGetStarted = () => navigate("/current");
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -21,7 +22,7 @@ export function Welcome() {
     <main className="flex h-screen flex-col items-start justify-center pb-4 pt-16">
       <div className="flex min-h-0 w-full flex-1 flex-col items-center gap-16">
         <header className="flex flex-col items-center gap-5">
-          <h1 className="text-4xl font-bold">Weather App</h1>
+          <h1 className="text-4xl font-bold">{productName}</h1>
           <p>
             {currentTime.toLocaleDateString(undefined, {
               weekday: "long",
@@ -44,7 +45,8 @@ export function Welcome() {
           <button
             type="button"
             onClick={handleGetStarted}
-            className="flex w-max items-center justify-center rounded-full bg-gray-950 p-1 dark:bg-white"
+            className="flex w-max items-center justify-center rounded-full bg-gray-950 p-1 transition-all hover:bg-gray-800 active:scale-95 dark:bg-white dark:hover:bg-gray-200"
+            aria-label="Get Started"
           >
             <ChevronRightIcon className="size-12 text-white dark:text-gray-950" />
           </button>
@@ -52,15 +54,20 @@ export function Welcome() {
       </div>
       <footer className="w-full text-center">
         <p>
+          Version
+          <span className="font-bold"> {version}</span>
+        </p>
+        <p>
           Developed by{" "}
           <a
             className="underline"
             target="_blank"
-            href="https://github.com/Liansky12"
+            href={author.url}
+            rel="noopener noreferrer"
           >
-            Liansky12
+            {author.name}
           </a>
-          , MIT License
+          , {license} License
         </p>
         <p>
           <a
