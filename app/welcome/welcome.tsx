@@ -19,7 +19,7 @@ export function Welcome() {
   }, []);
 
   return (
-    <main className="flex h-screen flex-col items-start justify-center pb-4 pt-16">
+    <main className="flex h-dvh flex-col items-start justify-center pb-4 pt-16">
       <div className="flex min-h-0 w-full flex-1 flex-col items-center gap-16">
         <header className="flex flex-col items-center gap-5">
           <h1 className="text-4xl font-bold">{productName}</h1>

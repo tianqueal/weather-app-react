@@ -36,7 +36,7 @@ export default function Current() {
 
   return (
     <main
-      className={`${weatherGradient ? `${weatherGradient.gradient} ${weatherGradient.textColor}` : ""} flex h-screen items-start justify-center bg-gradient-to-b pb-4 pl-4 pr-4 pt-16 transition-colors`}
+      className={`${weatherGradient ? `${weatherGradient.gradient} ${weatherGradient.textColor}` : ""} flex h-dvh items-start justify-center bg-gradient-to-b pb-4 pl-4 pr-4 pt-16 transition-colors`}
     >
       <div className="flex h-full min-h-0 flex-1 flex-col items-center gap-4">
         <h1 className="text-center text-4xl font-bold">{renderLocation()}</h1>
