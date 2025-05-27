@@ -2,10 +2,11 @@ import {
   ArrowPathIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/16/solid";
+import { useState } from "react";
 import { useGeolocation } from "~/hooks/useGeolocation";
 import { useWeather } from "~/hooks/useWeather";
 
-export default function Today() {
+export default function Current() {
   const { position, loadGeolocation, error: geoError } = useGeolocation();
   const {
     weather,
@@ -15,13 +16,14 @@ export default function Today() {
     weatherGradient,
     error: weatherError,
   } = useWeather(position);
+  const [allowUpdate, setAllowUpdate] = useState(true);
 
   const handleUpdate = async () => {
-    const now = new Date();
-
-    if (lastUpdated && now.getTime() - lastUpdated.getTime() < 10000) return;
+    setAllowUpdate(false);
 
     await loadGeolocation();
+
+    setTimeout(() => setAllowUpdate(true), 10000);
   };
 
   const renderLocation = () => {
@@ -55,14 +57,15 @@ export default function Today() {
         <section className="flex flex-col items-center gap-4">
           <button
             onClick={handleUpdate}
-            className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+            disabled={!allowUpdate}
+            className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white transition-all hover:bg-blue-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-blue-500 disabled:active:scale-100 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
           >
             <ArrowPathIcon className="size-6" />
             Update Weather
           </button>
           {lastUpdated && (
             <p className="text-center text-sm">
-              Last updated:{" "}
+              Last update:{" "}
               {lastUpdated.toLocaleTimeString(undefined, {
                 weekday: "long",
                 year: "numeric",
