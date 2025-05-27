@@ -1,17 +1,22 @@
 {
   "name": "weather-app-react",
+  "productName": "Weather App",
+  "version": "1.0.0",
   "private": false,
   "license": "MIT",
   "type": "module",
   "author": {
     "name": "Christian A.",
-    "email": "aqchristian12@gmail.com"
+    "email": "aqchristian12@gmail.com",
+    "url": "https://github.com/tianqueal"
   },
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
