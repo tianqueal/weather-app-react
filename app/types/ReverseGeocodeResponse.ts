@@ -22,6 +22,7 @@ export interface Address {
   neighbourhood: string;
   hamlet?: string;
   civil_parish?: string;
+  quarter?: string;
   town?: string;
   city?: string;
   county?: string;
