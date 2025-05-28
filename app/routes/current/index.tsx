@@ -47,7 +47,14 @@ export default function Current() {
                 {weather.current.temperature_2m.toFixed(0)}
               </span>
             ) : weatherError || geoError ? (
-              <ExclamationTriangleIcon className="size-12" />
+              <section className="flex flex-col items-center gap-4">
+                <ExclamationTriangleIcon className="size-12" />
+                <span className="text-center text-base font-semibold text-red-500 dark:text-red-400">
+                  {weatherError ||
+                    geoError?.userFriendlyMessage ||
+                    "Error fetching weather data"}
+                </span>
+              </section>
             ) : (
               <ArrowPathIcon className="size-12 animate-spin" />
             )}
