@@ -74,6 +74,7 @@ export function Welcome() {
             className="underline"
             target="_blank"
             href="https://open-meteo.com/"
+            rel="noopener noreferrer"
           >
             Weather data by Open-Meteo.com{" "}
           </a>
@@ -85,6 +86,7 @@ export function Welcome() {
             className="underline"
             target="_blank"
             href="http://osm.org/copyright"
+            rel="noopener noreferrer"
           >
             http://osm.org/copyright
           </a>
